@@ -7,10 +7,10 @@ import Body from './layouts/Body/Body'
 import Header from './components/Header/Header'
 import JournalList from './components/JournalList/JournalList'
 import JournalAddButton from './components/JournalAddButton/JournalAddButton'
+import JournalForm from './components/JournalForm/JournalForm'
 
-function App() {
-
-  let data = [{
+let INITIAL_DATA = [
+  {
     title: "Подготовка к обновлению курсов",
     text: "Текст первой заметки",
     date: new Date(),
@@ -20,7 +20,19 @@ function App() {
     text: "В это воскресенье...",
     date: new Date(),
   }
-  ]
+]
+
+function App() {
+
+  let [items, setItems] = useState(INITIAL_DATA)
+
+  let addItem = (item) =>{
+    setItems(oldItems => [...oldItems, {
+      text: item.text,
+      title: item.title,
+      date: new Date(item.date)
+    }])
+  }
 
   return (
     <div className='app'>
@@ -28,18 +40,16 @@ function App() {
         <Header />
         <JournalAddButton></JournalAddButton>
         <JournalList>
-          <CardButton>
-            <JournalItem title={data[0].title} text={data[0].text} date={data[0].date} />
-          </CardButton>
-          <CardButton>
-            <JournalItem title={data[1].title} text={data[1].text} date={data[1].date} />
-          </CardButton>
+          {items.map(el =>
+            <CardButton>
+              <JournalItem title={el.title} text={el.text} date={el.date} />
+            </CardButton>)
+          }
         </JournalList>
       </LeftPanel>
       <Body>
-        Body
+        <JournalForm onSubmit={addItem}/>
       </Body>
-
     </div>
   )
 }

@@ -5,7 +5,10 @@ import CardButton from '../CardButton/CardButton'
 function JournalAddButton() {
   return (
     <CardButton className="journal-add">
-      Новая заметка
+      Новое воспоминание
+      <div className='plus_logo'>
+        <img  src="/plus.svg" alt="" />
+      </div>
     </CardButton>
   )
 }
