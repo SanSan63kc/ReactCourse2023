@@ -7,6 +7,7 @@ import Body from './layouts/Body/Body'
 import Header from './components/Header/Header'
 import JournalList from './components/JournalList/JournalList'
 import JournalAddButton from './components/JournalAddButton/JournalAddButton'
+import JournalForm from './components/JournalForm/JournalForm'
 
 function App() {
 
@@ -23,9 +24,10 @@ function App() {
     }
   ]
 
+  let [inputData, setInputData] = useState("")
+
   let inputChange = (event) => {
-    console.log(event)
-    console.log(event.target.value)
+    setInputData(event.target.value)
   }
 
   return (
@@ -43,7 +45,7 @@ function App() {
         </JournalList>
       </LeftPanel>
       <Body>
-        <input type="text" onChange={inputChange} />
+        <JournalForm/>
       </Body>
 
     </div>
