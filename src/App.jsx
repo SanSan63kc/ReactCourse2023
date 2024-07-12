@@ -33,7 +33,7 @@ function App() {
       text: item.text,
       title: item.title,
       date: new Date(item.date),
-      id: Math.max(...oldItems.map(item => item.id)) + 1
+      id: oldItems.length > 0 ? Math.max(...oldItems.map(item => item.id)) + 1 : 1
     }])
   }
 
@@ -42,7 +42,7 @@ function App() {
       <LeftPanel>
         <Header />
         <JournalAddButton></JournalAddButton>
-        <JournalList items={items}/>
+        <JournalList items={items} />
       </LeftPanel>
       <Body>
         <JournalForm onSubmit={addItem} />
