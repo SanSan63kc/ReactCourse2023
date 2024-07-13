@@ -10,27 +10,30 @@ import JournalAddButton from './components/JournalAddButton/JournalAddButton'
 import JournalForm from './components/JournalForm/JournalForm'
 
 let INITIAL_DATA = [
-  {
+  /* {
+    id: 1,
     title: "Подготовка к обновлению курсов",
     text: "Текст первой заметки",
     date: new Date(),
   },
   {
+    id: 2,
     title: "Пробежать ТТТ",
     text: "В это воскресенье...",
     date: new Date(),
-  }
+  } */
 ]
 
 function App() {
 
   let [items, setItems] = useState(INITIAL_DATA)
 
-  let addItem = (item) =>{
+  let addItem = (item) => {
     setItems(oldItems => [...oldItems, {
       text: item.text,
       title: item.title,
-      date: new Date(item.date)
+      date: new Date(item.date),
+      id: oldItems.length > 0 ? Math.max(...oldItems.map(item => item.id)) + 1 : 1
     }])
   }
 
@@ -39,16 +42,10 @@ function App() {
       <LeftPanel>
         <Header />
         <JournalAddButton></JournalAddButton>
-        <JournalList>
-          {items.map(el =>
-            <CardButton>
-              <JournalItem title={el.title} text={el.text} date={el.date} />
-            </CardButton>)
-          }
-        </JournalList>
+        <JournalList items={items} />
       </LeftPanel>
       <Body>
-        <JournalForm onSubmit={addItem}/>
+        <JournalForm onSubmit={addItem} />
       </Body>
     </div>
   )
