@@ -1,78 +1,69 @@
-import React, { useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import styles from "./JournalForm.module.css"
 import Button from '../Button/Button'
 import cn from 'classnames'
+import { formReducer, INITIAL_STATE } from './JournalForm.state'
 
 function JournalForm({ onSubmit }) {
 
-    let [formValidState, setFormValidState] = useState({
-        title: true,
-        post: true,
-        date: true
-    })
+    let [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE)
+    let { isValid, isFormReadyToSubmit, values } = formState
+
+    useEffect(() => {
+        let timerId
+        if (!isValid.date || !isValid.post || !isValid.title) {
+            timerId = setTimeout(() => {
+                dispatchForm({ type: "RESET_VALIDITY" })
+            }, 2000)
+        }
+        return () => {
+            clearTimeout(timerId)
+        }
+    }, [isValid])
+
+    useEffect(() => {
+        if (isFormReadyToSubmit) {
+            onSubmit(values)
+        }
+    }, [isFormReadyToSubmit])
 
     let addJournalItem = (e) => {
         e.preventDefault()
         let formData = new FormData(e.target)
         let formProps = Object.fromEntries(formData)
-        let isFormValid = true
-
-        if (!formProps.title?.trim().length) {
-            setFormValidState(state => ({ ...state, title: false }))
-            isFormValid = false
-        } else {
-            setFormValidState(state => ({ ...state, title: true }))
-        }
-
-        if (!formProps.post?.trim().length) {
-            setFormValidState(state => ({ ...state, post: false }))
-            isFormValid = false
-        } else {
-            setFormValidState(state => ({ ...state, post: true }))
-        }
-
-        if (!formProps.date) {
-            setFormValidState(state => ({ ...state, date: false }))
-            isFormValid = false
-        } else {
-            setFormValidState(state => ({ ...state, date: true }))
-        }
-
-        if (!isFormValid) {
-            return
-        } else onSubmit(formProps)
-
-        /* onSubmit(formProps) */
+        dispatchForm({ type: "SUBMIT", payload: formProps })
     }
 
     return (
         <form className={styles["journal-form"]} onSubmit={addJournalItem}>
             <div>
                 <input type="text" name="title" className={cn(styles["input-title"], {
-                    [styles["invalid"]]: !formValidState.title
+                    [styles["invalid"]]: !isValid.title
                 })} />
             </div>
 
             <div className={styles["form-row"]}>
-                <label for="date" className={styles["form-label"]}>
+                <label htmlFor="date" className={styles["form-label"]}>
                     <img className={styles.logo} src="/calendar.svg" alt="Иконка календаря"></img>
                     <span>Дата</span>
                 </label>
-                <input type="date" name="date" id="date" className={cn(styles["input"],{
-                     [styles["invalid"]]: !formValidState.date       
-                })}/>
+                <input type="date" name="date" id="date" className={cn(styles["input"], {
+                    [styles["invalid"]]: !isValid.date
+                })} />
             </div>
 
             <div className={styles["form-row"]}>
-                <label for="tag" className={styles["form-label"]}>
+                <label htmlFor="tag" className={styles["form-label"]}>
                     <img className={styles.logo} src="/folder.svg" alt="Иконка папки"></img>
                     <span>Метки</span>
                 </label>
-                <input type="text" id="tag" name="tag" className={styles["input"]}/>
+                <input type="text" id="tag" name="tag" className={styles["input"]} />
             </div>
-            <textarea name="post" id="" className={cn(styles["input"],{
-                     [styles["invalid"]]: !formValidState.post       
-                })}></textarea>
+
+            <textarea name="post" id="" className={cn(styles["input"], {
+                [styles["invalid"]]: !isValid.post
+            })} />
+
             <Button text={"Сохранить"} />
         </form>
     )
