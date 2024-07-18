@@ -5,24 +5,29 @@ export let INITIAL_STATE = {
         date: true
     },
     values: {
-        post: undefined,
-        title: undefined,
-        date: undefined
+        post: '',
+        title: '',
+        date: '',
+        tag: ''
     },
     isFormReadyToSubmit: false
 }
 
 export function formReducer(state, action) {
     switch (action.type) {
+        case "CLEAR":
+            return { ...state, values: INITIAL_STATE.values, isFormReadyToSubmit: false }
+        case "SET_VALUE":
+            return { ...state, values: {...state.values, ...action.payload} }
         case "RESET_VALIDITY":
             return { ...state, isValid: INITIAL_STATE.isValid }
         case "SUBMIT": {
-            let titleValidity = action.payload.title?.trim().length
-            let postValidity = action.payload.post?.trim().length
-            let dateValidity = action.payload.date
+            let titleValidity = state.values.title?.trim().length
+            let postValidity = state.values.post?.trim().length
+            let dateValidity = state.values.date
 
             return {
-                values: action.payload,
+                ...state,
                 isValid: {
                     post: postValidity,
                     title: titleValidity,

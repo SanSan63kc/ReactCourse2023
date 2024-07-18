@@ -27,7 +27,6 @@ function App() {
     if (items.length){
       localStorage.setItem("data", JSON.stringify(items))
     }
-    console.log(items)
   }, [items])
 
   let addItem = (item) => {
