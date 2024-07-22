@@ -4,6 +4,7 @@ import Button from '../Button/Button'
 import cn from 'classnames'
 import { formReducer, INITIAL_STATE } from './JournalForm.state'
 import Input from '../Input/Input'
+import { UserContext } from '../../context/user.context'
 
 function JournalForm({ onSubmit }) {
 
@@ -15,7 +16,7 @@ function JournalForm({ onSubmit }) {
 
 
     let focusError = (isValid) => {
-        switch(true){
+        switch (true) {
             case !isValid.title: {
                 titleRef.current.focus()
                 break
@@ -61,64 +62,68 @@ function JournalForm({ onSubmit }) {
     }
 
     return (
-        <form className={styles["journal-form"]} onSubmit={addJournalItem}>
-            {/* TITLE */}
-            <div>
-                <Input
-                    type="text"
-                    onChange={onChange}
-                    value={values.title}
-                    name="title"
-                    ref={titleRef}
-                    isValid={isValid.title}
-                    appearence="title"
-                />
-            </div>
-            {/* DATE */}
-            <div className={styles["form-row"]}>
-                <label htmlFor="date" className={styles["form-label"]}>
-                    <img className={styles.logo} src="/calendar.svg" alt="Иконка календаря"></img>
-                    <span>Дата</span>
-                </label>
-                <Input
-                    type="date"
-                    onChange={onChange}
-                    value={values.date}
-                    name="date" 
-                    id="date"
-                    ref={dateRef}
-                    isValid={isValid.date}
-                />
-            </div>
-            {/* TAG */}
-            <div className={styles["form-row"]}>
-                <label htmlFor="tag" className={styles["form-label"]}>
-                    <img className={styles.logo} src="/folder.svg" alt="Иконка папки"></img>
-                    <span>Метки</span>
-                </label>
-                <Input
-                    type="text"
-                    id="tag"
-                    onChange={onChange}
-                    value={values.tag}
-                    name="tag"
-                    
-                />
-            </div>
-            {/* POST */}
-            <textarea
-                name="post"
-                onChange={onChange}
-                value={values.post}
-                id=""
-                ref={postRef}
-                className={cn(styles["input"], {
-                    [styles["invalid"]]: !isValid.post
-                })}
-            />
+        <UserContext.Consumer>
+            {(context) => <form className={styles["journal-form"]} onSubmit={addJournalItem}>
+                {context.userId}
+                {/* TITLE */}
+                <div>
+                    <Input
+                        type="text"
+                        onChange={onChange}
+                        value={values.title}
+                        name="title"
+                        ref={titleRef}
+                        isValid={isValid.title}
+                        appearence="title"
+                    />
+                </div>
+                {/* DATE */}
+                <div className={styles["form-row"]}>
+                    <label htmlFor="date" className={styles["form-label"]}>
+                        <img className={styles.logo} src="/calendar.svg" alt="Иконка календаря"></img>
+                        <span>Дата</span>
+                    </label>
+                    <Input
+                        type="date"
+                        onChange={onChange}
+                        value={values.date}
+                        name="date"
+                        id="date"
+                        ref={dateRef}
+                        isValid={isValid.date}
+                    />
+                </div>
+                {/* TAG */}
+                <div className={styles["form-row"]}>
+                    <label htmlFor="tag" className={styles["form-label"]}>
+                        <img className={styles.logo} src="/folder.svg" alt="Иконка папки"></img>
+                        <span>Метки</span>
+                    </label>
+                    <Input
+                        type="text"
+                        id="tag"
+                        onChange={onChange}
+                        value={values.tag}
+                        name="tag"
 
-            <Button text={"Сохранить"} />
-        </form>
+                    />
+                </div>
+                {/* POST */}
+                <textarea
+                    name="post"
+                    onChange={onChange}
+                    value={values.post}
+                    id=""
+                    ref={postRef}
+                    className={cn(styles["input"], {
+                        [styles["invalid"]]: !isValid.post
+                    })}
+                />
+
+                <Button text={"Сохранить"} />
+            </form>}
+
+        </UserContext.Consumer>
     )
 }
 

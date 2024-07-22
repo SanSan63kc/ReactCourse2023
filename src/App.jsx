@@ -7,12 +7,13 @@ import JournalList from './components/JournalList/JournalList'
 import JournalAddButton from './components/JournalAddButton/JournalAddButton'
 import JournalForm from './components/JournalForm/JournalForm'
 import { useLocalStorage } from './hooks/use-localstorage.hook'
+import { UserContext } from './context/user.context'
 
-function mapItems(items){
-  if (!items){
+function mapItems(items) {
+  if (!items) {
     return []
   }
-  return items.map(i=>({
+  return items.map(i => ({
     ...i,
     date: new Date(i.date)
   }))
@@ -24,7 +25,7 @@ function App() {
   let [items, setItems] = useLocalStorage("data")
 
   let addItem = (item) => {
-    setItems( [...mapItems(items), {
+    setItems([...mapItems(items), {
       post: item.post,
       title: item.title,
       date: new Date(item.date),
@@ -33,16 +34,18 @@ function App() {
   }
 
   return (
-    <div className='app'>
-      <LeftPanel>
-        <Header />
-        <JournalAddButton></JournalAddButton>
-        <JournalList items={mapItems(items)} />
-      </LeftPanel>
-      <Body>
-        <JournalForm onSubmit={addItem} />
-      </Body>
-    </div>
+    <UserContext.Provider value={{userId: items.length}}>
+      <div className='app'>
+        <LeftPanel>
+          <Header />
+          <JournalAddButton></JournalAddButton>
+          <JournalList items={mapItems(items)} />
+        </LeftPanel>
+        <Body>
+          <JournalForm onSubmit={addItem} />
+        </Body>
+      </div>
+    </UserContext.Provider>
   )
 }
 
