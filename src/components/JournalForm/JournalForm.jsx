@@ -1,9 +1,10 @@
-import React, { useEffect, useReducer, useRef } from 'react'
+import React, { useContext, useEffect, useReducer, useRef } from 'react'
 import styles from "./JournalForm.module.css"
 import Button from '../Button/Button'
 import cn from 'classnames'
 import { formReducer, INITIAL_STATE } from './JournalForm.state'
 import Input from '../Input/Input'
+import { UserContext } from '../../context/user.context'
 
 function JournalForm({ onSubmit }) {
 
@@ -12,10 +13,11 @@ function JournalForm({ onSubmit }) {
     let titleRef = useRef()
     let dateRef = useRef()
     let postRef = useRef()
+    let { userId } = useContext(UserContext)
 
 
     let focusError = (isValid) => {
-        switch(true){
+        switch (true) {
             case !isValid.title: {
                 titleRef.current.focus()
                 break
@@ -62,6 +64,7 @@ function JournalForm({ onSubmit }) {
 
     return (
         <form className={styles["journal-form"]} onSubmit={addJournalItem}>
+            {userId}
             {/* TITLE */}
             <div>
                 <Input
@@ -84,7 +87,7 @@ function JournalForm({ onSubmit }) {
                     type="date"
                     onChange={onChange}
                     value={values.date}
-                    name="date" 
+                    name="date"
                     id="date"
                     ref={dateRef}
                     isValid={isValid.date}
@@ -102,7 +105,7 @@ function JournalForm({ onSubmit }) {
                     onChange={onChange}
                     value={values.tag}
                     name="tag"
-                    
+
                 />
             </div>
             {/* POST */}
@@ -119,6 +122,8 @@ function JournalForm({ onSubmit }) {
 
             <Button text={"Сохранить"} />
         </form>
+
+
     )
 }
 
