@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styles from "./SelectUser.module.css"
-import { UserContext } from '../../context/user.context'
+import { UserContext } from '../../context/user.context.jsx'
 
 function SelectUser() {
     let { userId, setUserId } = useContext(UserContext)

@@ -4,7 +4,7 @@ import Button from '../Button/Button'
 import cn from 'classnames'
 import { formReducer, INITIAL_STATE } from './JournalForm.state'
 import Input from '../Input/Input'
-import { UserContext } from '../../context/user.context'
+import { UserContext } from '../../context/user.context.jsx'
 
 function JournalForm({ onSubmit }) {
 
@@ -57,6 +57,10 @@ function JournalForm({ onSubmit }) {
         dispatchForm({ type: "SET_VALUE", payload: { [e.target.name]: e.target.value } })
     }
 
+    useEffect(() => {
+        dispatchForm({ type: "SET_VALUE", payload: { userId } })
+    }, [userId])
+
     let addJournalItem = (e) => {
         e.preventDefault()
         dispatchForm({ type: "SUBMIT" })
@@ -64,7 +68,6 @@ function JournalForm({ onSubmit }) {
 
     return (
         <form className={styles["journal-form"]} onSubmit={addJournalItem}>
-            {userId}
             {/* TITLE */}
             <div>
                 <Input
