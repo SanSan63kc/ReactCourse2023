@@ -123,7 +123,7 @@ function JournalForm({ onSubmit }) {
                 })}
             />
 
-            <Button text={"Сохранить"} />
+            <Button>Сохранить</Button>
         </form>
 
 
