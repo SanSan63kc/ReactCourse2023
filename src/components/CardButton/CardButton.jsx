@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import "./CardButton.css"
 
-function CardButton({ children, className }) {
+function CardButton({ children, className, ...props }) {
 
   let cl = "card-button" + (className ? " "  + className : "")
 
   return (
-    <button className={cl}>
+    <button {...props} className={cl}>
       {children}
     </button>
   )
