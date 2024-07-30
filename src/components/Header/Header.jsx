@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react'
 import SelectUser from '../SelectUser/SelectUser'
-import Button from '../Button/Button'
 import Logo from '../Logo/Logo'
 
 let logos = [
@@ -10,18 +9,11 @@ let logos = [
 
 function Header() {
 
-  let [logoIndex, setLogoIndex] = useState(0)
-
-  let toggleLogo = () => {
-    setLogoIndex(state => Number(!Boolean(state)))
-
-  }
-
   return (
     <>
-      <Logo image={logos[logoIndex]} />
+      <Logo image={logos[0]} />
       <SelectUser />
-      <Button onClick={toggleLogo}>Сменить лого</Button>
+
     </>
   )
 }

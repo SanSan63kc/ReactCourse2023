@@ -6,7 +6,7 @@ import { formReducer, INITIAL_STATE } from './JournalForm.state'
 import Input from '../Input/Input'
 import { UserContext } from '../../context/user.context.jsx'
 
-function JournalForm({ onSubmit, data }) {
+function JournalForm({ onSubmit, data, onDelete }) {
 
     let [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE)
     let { isValid, isFormReadyToSubmit, values } = formState
@@ -34,6 +34,10 @@ function JournalForm({ onSubmit, data }) {
     }
 
     useEffect(() => {
+        if (!data){
+            dispatchForm({ type: "CLEAR" })
+            dispatchForm({ type: "SET_VALUE", payload: { userId } })
+        }
         dispatchForm({ type: "SET_VALUE", payload: { ...data } })
     }, [data])
 
@@ -58,8 +62,6 @@ function JournalForm({ onSubmit, data }) {
         }
     }, [isFormReadyToSubmit, values, onSubmit, userId])
 
-
-
     let onChange = (e) => {
         dispatchForm({ type: "SET_VALUE", payload: { [e.target.name]: e.target.value } })
     }
@@ -73,12 +75,16 @@ function JournalForm({ onSubmit, data }) {
         dispatchForm({ type: "SUBMIT" })
     }
 
-
+    let deleteJournalItem = () => {
+        onDelete(data.id)
+        dispatchForm({ type: "CLEAR" })
+        dispatchForm({ type: "SET_VALUE", payload: { userId } })
+    }
 
     return (
         <form className={styles["journal-form"]} onSubmit={addJournalItem}>
             {/* TITLE */}
-            <div>
+            <div className={styles["form-row"]}>
                 <Input
                     type="text"
                     onChange={onChange}
@@ -88,6 +94,13 @@ function JournalForm({ onSubmit, data }) {
                     isValid={isValid.title}
                     appearence="title"
                 />
+                {data?.id &&
+                    <button
+                        className={styles["delete"]}
+                        type="button"
+                        onClick={ deleteJournalItem}>
+                        <img className={styles["delete-img"]} src="./archive.svg" />
+                    </button>}
             </div>
             {/* DATE */}
             <div className={styles["form-row"]}>

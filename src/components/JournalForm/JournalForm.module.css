@@ -4,10 +4,6 @@
     gap: 30px;
 }
 
-
-
-
-
 .logo {
     width: 18px;
     height: auto;
@@ -42,4 +38,21 @@
 .invalid {
     border: 1px solid red;
     background-color: rgb(113, 13, 13);
+}
+
+.delete{
+    cursor: pointer;
+    border-radius: 25%;
+    padding: 3px;
+}
+
+.delete:hover{
+    background: rgb(255, 255, 255, 0.4);
+}
+
+.delete-img{
+    border: none;
+    background: none;
+    max-width: 30px;
+    max-height: 30px;
 }

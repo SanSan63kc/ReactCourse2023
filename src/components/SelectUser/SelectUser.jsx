@@ -8,7 +8,7 @@ function SelectUser() {
         setUserId(Number(e.target.value))
     }
     return (
-        <select name="user" id="user" value={userId} onChange={changeUser}>
+        <select className={styles["select"]} name="user" id="user" value={userId} onChange={changeUser}>
             <option value="1">Саня </option>
             <option value="2">Санёчек</option>
         </select>
